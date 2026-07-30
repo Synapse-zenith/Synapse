@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#b8a9d4">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<title>Synapse · 个人电子工作台</title>
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/splash.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/modules.css">
+<link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+
+<!-- ====== 开屏页面 ====== -->
+<div id="splashScreen" class="splash-screen">
+  <div class="splash-bg">
+    <div class="splash-stars" id="splashStars"></div>
+    <div class="splash-content">
+      <div class="splash-logo">
+        <svg viewBox="0 0 80 80" class="splash-logo-svg">
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#c4b5e8"/>
+              <stop offset="100%" style="stop-color:#a8d8ea"/>
+            </linearGradient>
+          </defs>
+          <circle cx="40" cy="40" r="36" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" opacity="0.6"/>
+          <circle cx="40" cy="40" r="28" fill="none" stroke="url(#logoGrad)" stroke-width="1.5" opacity="0.4"/>
+          <path d="M40 18 L40 62 M18 40 L62 40" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="40" cy="40" r="8" fill="url(#logoGrad)" opacity="0.8"/>
+          <circle cx="26" cy="26" r="3" fill="#c4b5e8" opacity="0.7"/>
+          <circle cx="54" cy="26" r="3" fill="#a8d8ea" opacity="0.7"/>
+          <circle cx="40" cy="14" r="2.5" fill="#c4b5e8" opacity="0.6"/>
+          <circle cx="40" cy="66" r="2.5" fill="#a8d8ea" opacity="0.6"/>
+        </svg>
+        <h1 class="splash-title">Synapse</h1>
+        <p class="splash-subtitle">你的灵感神经元</p>
+      </div>
+      <div class="splash-quote-card" id="splashQuote">
+        <div class="splash-flowers">
+          <span class="flower">🌸</span>
+          <span class="flower small">🌼</span>
+          <span class="flower">🌷</span>
+          <span class="flower small">🌻</span>
+          <span class="flower">💐</span>
+        </div>
+        <p class="splash-quote-text" id="quoteText"></p>
+        <div class="splash-flowers bottom">
+          <span class="flower small">🌿</span>
+          <span class="flower">🌺</span>
+          <span class="flower small">🍀</span>
+        </div>
+      </div>
+      <button class="splash-enter-btn" id="enterBtn" onclick="enterMain()">
+        <span>进入主页</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 主应用 ====== -->
+<div id="mainApp" class="main-app hidden">
+
+  <!-- 遮罩层 -->
+  <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+  <!-- 侧边菜单栏 -->
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 40 40" width="36" height="36">
+          <defs>
+            <linearGradient id="sLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#c4b5e8"/>
+              <stop offset="100%" style="stop-color:#a8d8ea"/>
+            </linearGradient>
+          </defs>
+          <circle cx="20" cy="20" r="18" fill="none" stroke="url(#sLogoGrad)" stroke-width="2"/>
+          <circle cx="20" cy="20" r="5" fill="url(#sLogoGrad)" opacity="0.8"/>
+        </svg>
+        <span>Synapse</span>
+      </div>
+      <button class="sidebar-close" onclick="closeSidebar()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="sidebar-nav">
+      <a class="sidebar-item active" data-page="home" onclick="navigateTo('home')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <span>首页</span>
+      </a>
+      <a class="sidebar-item" data-page="words" onclick="navigateTo('words')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </span>
+        <span>英语单词</span>
+      </a>
+      <a class="sidebar-item" data-page="mood" onclick="navigateTo('mood')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </span>
+        <span>每日心情</span>
+      </a>
+      <a class="sidebar-item" data-page="diet" onclick="navigateTo('diet')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </span>
+        <span>健康饮食</span>
+      </a>
+      <a class="sidebar-item" data-page="sport" onclick="navigateTo('sport')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </span>
+        <span>运动健康</span>
+      </a>
+      <a class="sidebar-item" data-page="movies" onclick="navigateTo('movies')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+        </span>
+        <span>影视收藏</span>
+      </a>
+      <a class="sidebar-item" data-page="notes" onclick="navigateTo('notes')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </span>
+        <span>纸条收纳</span>
+      </a>
+      <a class="sidebar-item" data-page="reading" onclick="navigateTo('reading')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        </span>
+        <span>阅读档案</span>
+      </a>
+      <a class="sidebar-item" data-page="whiteboard" onclick="navigateTo('whiteboard')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </span>
+        <span>灵感白板</span>
+      </a>
+      <a class="sidebar-item" data-page="memo" onclick="navigateTo('memo')">
+        <span class="sidebar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </span>
+        <span>生活备忘</span>
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div class="sidebar-automation-status" id="autoStatus">
+        <span class="status-dot"></span>
+        <span>自动化: 静态模板</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区 -->
+  <div id="mainContent" class="main-content">
+    <!-- 顶部栏 -->
+    <header class="topbar">
+      <button class="topbar-menu-btn" onclick="openSidebar()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <h2 class="topbar-title" id="topbarTitle">首页</h2>
+      <div class="topbar-date" id="topbarDate"></div>
+    </header>
+
+    <!-- 页面容器 -->
+    <div class="page-container" id="pageContainer">
+      <!-- 页面将通过 JS 动态加载 -->
+    </div>
+  </div>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

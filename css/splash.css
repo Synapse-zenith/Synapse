@@ -1,0 +1,139 @@
+/* ====== 开屏页面 ====== */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  max-width: 480px;
+  margin: 0 auto;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.splash-screen.exit {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+.splash-bg {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #e8e0f8 0%, #d4ecf8 40%, #f0ebff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.splash-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.splash-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 24px;
+  z-index: 2;
+  animation: fadeInUp 0.8s ease;
+}
+
+.splash-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.splash-logo-svg {
+  width: 80px;
+  height: 80px;
+  animation: float 3s ease-in-out infinite;
+}
+.splash-title {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #9b8ec4, #6ab0cc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+.splash-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 4px;
+}
+
+.splash-quote-card {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  text-align: center;
+  max-width: 320px;
+  border: 1px solid rgba(212,197,240,0.3);
+  box-shadow: 0 8px 32px rgba(155,142,196,0.12);
+}
+
+.splash-flowers {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.splash-flowers.bottom {
+  margin-bottom: 0;
+  margin-top: 16px;
+}
+.flower {
+  font-size: 22px;
+  animation: float 2.5s ease-in-out infinite;
+}
+.flower.small { font-size: 16px; animation-delay: 0.5s; }
+.flower:nth-child(2) { animation-delay: 0.3s; }
+.flower:nth-child(3) { animation-delay: 0.6s; }
+.flower:nth-child(4) { animation-delay: 0.9s; }
+.flower:nth-child(5) { animation-delay: 0.2s; }
+
+.splash-quote-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.splash-enter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  border: none;
+  border-radius: 50px;
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(155,142,196,0.3);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease 0.3s both;
+}
+.splash-enter-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 12px rgba(155,142,196,0.2);
+}

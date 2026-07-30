@@ -1,0 +1,199 @@
+/* ====== Synapse Global Styles ====== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* 主色调 - 浅紫 + 淡蓝 */
+  --purple-light: #d4c5f0;
+  --purple: #b8a9d4;
+  --purple-mid: #9b8ec4;
+  --purple-deep: #7b6db0;
+  --blue-light: #c5e3f0;
+  --blue: #a8d8ea;
+  --blue-mid: #8cc8e0;
+  --blue-deep: #6ab0cc;
+  --gradient-primary: linear-gradient(135deg, #d4c5f0, #a8d8ea);
+  --gradient-card: linear-gradient(135deg, rgba(212,197,240,0.25), rgba(168,216,234,0.25));
+  --gradient-glow: linear-gradient(135deg, rgba(212,197,240,0.4), rgba(168,216,234,0.4));
+  
+  /* 背景 */
+  --bg-primary: #f5f0ff;
+  --bg-secondary: #eef7fc;
+  --bg-card: rgba(255,255,255,0.75);
+  --bg-card-hover: rgba(255,255,255,0.9);
+  --bg-glass: rgba(255,255,255,0.6);
+  
+  /* 文字 */
+  --text-primary: #3d3660;
+  --text-secondary: #6b6490;
+  --text-muted: #9b94b8;
+  --text-white: #faf8ff;
+  
+  /* 功能色 */
+  --success: #7ecba1;
+  --warning: #f0c78e;
+  --danger: #f0a0a8;
+  --info: #8ec8f0;
+  
+  /* 尺寸 */
+  --sidebar-width: 280px;
+  --topbar-height: 56px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 8px rgba(155,142,196,0.12);
+  --shadow-md: 0 4px 16px rgba(155,142,196,0.15);
+  --shadow-lg: 0 8px 32px rgba(155,142,196,0.18);
+  --shadow-glow: 0 0 24px rgba(168,216,234,0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Noto Sans SC', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--purple-light);
+  border-radius: 4px;
+}
+
+/* 通用按钮 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+.btn-primary {
+  background: var(--gradient-primary);
+  color: var(--text-white);
+  box-shadow: var(--shadow-md);
+}
+.btn-secondary {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border: 1.5px solid var(--purple-light);
+}
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+}
+
+/* 卡片 */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.2);
+  transition: all 0.3s ease;
+}
+.card:active {
+  transform: scale(0.98);
+}
+
+/* 标签 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--gradient-card);
+  color: var(--purple-deep);
+}
+
+/* 输入框 */
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--purple-light);
+  border-radius: var(--radius-sm);
+  background: var(--bg-glass);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.3s;
+}
+.input:focus {
+  border-color: var(--blue-mid);
+  box-shadow: 0 0 0 3px rgba(168,216,234,0.2);
+}
+
+textarea.input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* 动画 */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+.fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+
+.hidden { display: none !important; }

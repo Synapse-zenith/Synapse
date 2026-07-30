@@ -1,0 +1,799 @@
+/* ====== 功能模块通用样式 ====== */
+.module-page {
+  padding-bottom: 32px;
+}
+
+.module-header {
+  margin-bottom: 16px;
+}
+.module-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.module-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ====== 英语单词模块 ====== */
+.words-config {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.words-config-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.words-count-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.words-count-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.words-count-num {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--purple-deep);
+  min-width: 40px;
+  text-align: center;
+}
+.words-count-btn {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--purple-light);
+  border-radius: 50%;
+  background: white;
+  color: var(--purple-deep);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.words-count-btn:active {
+  background: var(--purple-light);
+  color: white;
+}
+.words-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.word-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+  transition: all 0.3s;
+}
+.word-card.learned {
+  opacity: 0.65;
+  border-color: var(--success);
+}
+.word-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.word-en {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Quicksand', sans-serif;
+}
+.word-phonetic {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.word-zh {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.word-example {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 8px 12px;
+  background: rgba(168,216,234,0.12);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--blue);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+.word-actions-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.word-learned-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--success);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.word-learned-btn.done {
+  background: var(--success);
+  color: white;
+}
+.word-video-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(240,160,168,0.15);
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.word-video-btn:active {
+  background: rgba(240,160,168,0.3);
+}
+.words-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.words-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(212,197,240,0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.words-progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.words-progress-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--purple-deep);
+  min-width: 48px;
+  text-align: right;
+}
+
+.review-section {
+  margin-top: 16px;
+}
+.review-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+/* ====== 心情面板 ====== */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.mood-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.mood-item:active {
+  transform: scale(0.95);
+}
+.mood-item.selected {
+  border-color: var(--purple);
+  background: rgba(212,197,240,0.2);
+}
+.mood-emoji {
+  font-size: 36px;
+}
+.mood-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.mood-history {
+  margin-top: 16px;
+}
+.mood-history-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.mood-history-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mood-history-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.mood-history-item:hover {
+  background: rgba(240,160,168,0.1);
+}
+.mood-history-item:active {
+  transform: scale(0.9);
+  background: rgba(240,160,168,0.2);
+}
+
+/* ====== 饮食饮水 ====== */
+.diet-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.diet-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: rgba(212,197,240,0.1);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.diet-tab.active {
+  background: var(--gradient-primary);
+  color: white;
+}
+.water-tracker {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.water-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.water-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+.water-goal {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.water-cups {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.water-cup {
+  width: 40px;
+  height: 48px;
+  border-radius: 8px 8px 14px 14px;
+  border: 2px solid var(--blue-light);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+.water-cup.filled {
+  background: rgba(168,216,234,0.4);
+  border-color: var(--blue-mid);
+}
+.water-progress-bar {
+  height: 8px;
+  background: rgba(168,216,234,0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.water-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue-light), var(--blue-mid));
+  border-radius: 4px;
+  transition: width 0.4s;
+}
+
+.recipe-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.recipe-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.recipe-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.recipe-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.diet-record-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+.diet-record-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  min-width: 48px;
+}
+.diet-record-content {
+  flex: 1;
+  font-size: 14px;
+}
+
+/* ====== 运动健康 ====== */
+.training-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.training-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.training-details {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.training-detail {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.training-check-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border: 1.5px solid var(--purple-light);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--purple-deep);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.training-check-btn.done {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+.body-record-form {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.form-group {
+  margin-bottom: 12px;
+}
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  display: block;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ====== 影视收藏 ====== */
+.movie-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.movie-tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: rgba(212,197,240,0.1);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.movie-tab.active {
+  background: var(--gradient-primary);
+  color: white;
+}
+.movie-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.movie-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 4px 0 0 4px;
+}
+.movie-card.watched::before {
+  background: var(--success);
+}
+.movie-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.movie-info {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.movie-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.movie-ext-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(168,216,234,0.2);
+  color: var(--blue-deep);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.movie-ext-link:active {
+  background: rgba(168,216,234,0.4);
+}
+.movie-move-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--success);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.movie-move-btn:active {
+  background: rgba(126,203,161,0.15);
+}
+.movie-delete-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--danger);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.movie-delete-btn:active {
+  background: rgba(240,160,168,0.15);
+}
+
+/* ====== 纸条收纳 ====== */
+.note-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.note-date {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.note-content {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+.note-summary {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(168,216,234,0.1);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.note-summary-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue-deep);
+  margin-bottom: 4px;
+}
+.note-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.note-actions button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.note-summarize-btn {
+  background: rgba(168,216,234,0.2);
+  color: var(--blue-deep);
+}
+.note-delete-btn {
+  background: rgba(240,160,168,0.15);
+  color: var(--danger);
+}
+
+/* ====== 阅读档案 ====== */
+.reading-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.reading-book-name {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.reading-author {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.reading-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.reading-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(212,197,240,0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.reading-progress-fill {
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+.reading-progress-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  min-width: 36px;
+}
+.reading-excerpt {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(212,197,240,0.08);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  border-left: 3px solid var(--purple-light);
+}
+.reading-excerpt-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--purple-deep);
+  margin-bottom: 4px;
+}
+
+/* ====== 灵感白板 ====== */
+.whiteboard-input-area {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+}
+.whiteboard-ideas {
+  display: grid;
+  gap: 12px;
+}
+.idea-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+  position: relative;
+}
+.idea-card:nth-child(odd) {
+  border-left: 4px solid var(--purple-light);
+}
+.idea-card:nth-child(even) {
+  border-left: 4px solid var(--blue-light);
+}
+.idea-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.idea-text {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.idea-delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ====== 生活备忘 ====== */
+.memo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.memo-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(212,197,240,0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.memo-pin {
+  color: var(--purple-light);
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+.memo-body {
+  flex: 1;
+}
+.memo-text {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+.memo-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.memo-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.empty-state-text {
+  font-size: 14px;
+}
