@@ -181,6 +181,17 @@
 
 </div>
 
+<script>
+// 防卡死：5秒后如果开屏还在，自动进入主页
+setTimeout(function(){
+  var splash = document.getElementById('splashScreen');
+  var main = document.getElementById('mainApp');
+  if(splash && !splash.classList.contains('hidden')){
+    splash.classList.add('hidden');
+    if(main) main.classList.remove('hidden');
+  }
+}, 5000);
+</script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 </body>
