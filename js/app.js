@@ -1,34 +1,51 @@
 // ====== Synapse 主应用 ======
 
+// ====== 安全的本地存储（兼容 Safari 无痕模式 / webview） ======
+var _memStore = {};
+var safeStorage = {
+  getItem: function(k) {
+    try { return localStorage.getItem(k); } catch(e) { return _memStore[k] || null; }
+  },
+  setItem: function(k, v) {
+    try { localStorage.setItem(k, v); } catch(e) { _memStore[k] = v; }
+  },
+  removeItem: function(k) {
+    try { localStorage.removeItem(k); } catch(e) { delete _memStore[k]; }
+  }
+};
+function safeParse(k, def) {
+  try { return JSON.parse(safeStorage.getItem(k) || JSON.stringify(def)); } catch(e) { return def; }
+}
+
 // ====== 状态管理 ======
 const STATE = {
   currentPage: 'home',
-  todos: JSON.parse(localStorage.getItem('synapse_todos') || '[]'),
-  bodyStatus: JSON.parse(localStorage.getItem('synapse_body') || JSON.stringify(DEFAULT_BODY_STATUS)),
-  wordCount: parseInt(localStorage.getItem('synapse_wordCount') || '20'),
-  learnedWords: JSON.parse(localStorage.getItem('synapse_learnedWords') || '[]'),
-  todayMood: localStorage.getItem('synapse_todayMood') || null,
-  moodHistory: JSON.parse(localStorage.getItem('synapse_moodHistory') || '[]'),
-  waterCups: parseInt(localStorage.getItem('synapse_waterCups') || '0'),
+  todos: safeParse('synapse_todos', []),
+  bodyStatus: safeParse('synapse_body', DEFAULT_BODY_STATUS),
+  wordCount: parseInt(safeStorage.getItem('synapse_wordCount') || '20'),
+  learnedWords: safeParse('synapse_learnedWords', []),
+  todayMood: safeStorage.getItem('synapse_todayMood') || null,
+  moodHistory: safeParse('synapse_moodHistory', []),
+  waterCups: parseInt(safeStorage.getItem('synapse_waterCups') || '0'),
   waterGoal: 8,
-  dietRecords: JSON.parse(localStorage.getItem('synapse_dietRecords') || '[]'),
-  trainingDone: JSON.parse(localStorage.getItem('synapse_trainingDone') || '[]'),
-  bodyRecords: JSON.parse(localStorage.getItem('synapse_bodyRecords') || '[]'),
-  moviesWatched: JSON.parse(localStorage.getItem('synapse_moviesWatched') || JSON.stringify(MOVIES_WATCHED)),
-  moviesWatchlist: JSON.parse(localStorage.getItem('synapse_moviesWatchlist') || JSON.stringify(MOVIES_WATCHLIST)),
-  movieRecommends: JSON.parse(localStorage.getItem('synapse_movieRecommends') || JSON.stringify(MOVIE_RECOMMEND)),
-  recommendPool: JSON.parse(localStorage.getItem('synapse_recommendPool') || JSON.stringify(MOVIE_RECOMMEND_POOL)),
-  paperNotes: JSON.parse(localStorage.getItem('synapse_paperNotes') || '[]'),
-  readingList: JSON.parse(localStorage.getItem('synapse_readingList') || JSON.stringify(READING_LIST)),
-  whiteboardIdeas: JSON.parse(localStorage.getItem('synapse_whiteboardIdeas') || '[]'),
-  memos: JSON.parse(localStorage.getItem('synapse_memos') || '[]')
+  dietRecords: safeParse('synapse_dietRecords', []),
+  trainingDone: safeParse('synapse_trainingDone', []),
+  bodyRecords: safeParse('synapse_bodyRecords', []),
+  moviesWatched: safeParse('synapse_moviesWatched', MOVIES_WATCHED),
+  moviesWatchlist: safeParse('synapse_moviesWatchlist', MOVIES_WATCHLIST),
+  movieRecommends: safeParse('synapse_movieRecommends', MOVIE_RECOMMEND),
+  recommendPool: safeParse('synapse_recommendPool', MOVIE_RECOMMEND_POOL),
+  paperNotes: safeParse('synapse_paperNotes', []),
+  readingList: safeParse('synapse_readingList', READING_LIST),
+  whiteboardIdeas: safeParse('synapse_whiteboardIdeas', []),
+  memos: safeParse('synapse_memos', [])
 };
 
 function saveState(key) {
-  localStorage.setItem('synapse_' + key, JSON.stringify(STATE[key]));
+  safeStorage.setItem('synapse_' + key, JSON.stringify(STATE[key]));
 }
 function savePrimitive(key) {
-  localStorage.setItem('synapse_' + key, STATE[key]);
+  safeStorage.setItem('synapse_' + key, STATE[key]);
 }
 
 // ====== 初始化 ======
@@ -214,7 +231,7 @@ function deleteTodo(idx) {
 // 首页身体状态点击编辑
 function editBodyStatus(key) {
   const s = STATE.bodyStatus[key];
-  const newVal = prompt(`修改「${s.label}」：`, s.value);
+  const newVal = prompt('修改「' + s.label + '」：', s.value);
   if (newVal !== null && newVal.trim() !== '') {
     STATE.bodyStatus[key].value = newVal.trim();
     saveState('body');
@@ -291,32 +308,31 @@ function renderWords(container) {
 
 function getTodayWords() {
   const today = new Date().toDateString();
-  const storedDate = localStorage.getItem('synapse_wordDate');
-  const storedWords = JSON.parse(localStorage.getItem('synapse_todayWords') || 'null');
+  const storedDate = safeStorage.getItem('synapse_wordDate');
+  const storedWords = JSON.parse(safeStorage.getItem('synapse_todayWords') || 'null');
   
   if (storedDate === today && storedWords) return storedWords;
   
-  // Fisher-Yates 洗牌，保证真随机
   const pool = [...WORD_BANK];
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
   const selected = pool.slice(0, Math.min(STATE.wordCount, WORD_BANK.length));
-  localStorage.setItem('synapse_wordDate', today);
-  localStorage.setItem('synapse_todayWords', JSON.stringify(selected));
+  safeStorage.setItem('synapse_wordDate', today);
+  safeStorage.setItem('synapse_todayWords', JSON.stringify(selected));
   return selected;
 }
 
 function changeWordCount(delta) {
   STATE.wordCount = Math.max(5, Math.min(50, STATE.wordCount + delta));
   savePrimitive('wordCount');
-  localStorage.removeItem('synapse_wordDate');
+  safeStorage.removeItem('synapse_wordDate');
   loadPage('words');
 }
 
 function refreshWords() {
-  localStorage.removeItem('synapse_wordDate');
+  safeStorage.removeItem('synapse_wordDate');
   loadPage('words');
 }
 
@@ -331,10 +347,9 @@ function toggleWordLearned(word) {
 // ====== 每日心情 ======
 function renderMood(container) {
   const today = new Date().toDateString();
-  const storedMoodDate = localStorage.getItem('synapse_moodDate');
+  const storedMoodDate = safeStorage.getItem('synapse_moodDate');
   const todayMood = (storedMoodDate === today) ? STATE.todayMood : null;
   
-  // 格式化日期显示
   const now = new Date();
   const dateStr = `${now.getFullYear()}年${(now.getMonth()+1)}月${now.getDate()}日`;
   
@@ -376,10 +391,9 @@ function renderMood(container) {
 function selectMood(mood) {
   const today = new Date().toDateString();
   STATE.todayMood = mood;
-  localStorage.setItem('synapse_todayMood', mood);
-  localStorage.setItem('synapse_moodDate', today);
+  safeStorage.setItem('synapse_todayMood', mood);
+  safeStorage.setItem('synapse_moodDate', today);
   
-  // 如果今天已经记录过，替换而不是新增
   const existingIdx = STATE.moodHistory.findIndex(h => h.date === today);
   if (existingIdx > -1) {
     STATE.moodHistory[existingIdx].mood = mood;
@@ -394,13 +408,12 @@ function selectMood(mood) {
 function deleteMoodRecord(idx) {
   if (confirm('确定删除这条心情记录吗？')) {
     STATE.moodHistory.splice(idx, 1);
-    // 如果删除的是今天的，清除今日心情
     const today = new Date().toDateString();
     const remaining = STATE.moodHistory.find(h => h.date === today);
     if (!remaining) {
       STATE.todayMood = null;
-      localStorage.removeItem('synapse_todayMood');
-      localStorage.removeItem('synapse_moodDate');
+      safeStorage.removeItem('synapse_todayMood');
+      safeStorage.removeItem('synapse_moodDate');
     }
     saveState('moodHistory');
     loadPage('mood');
@@ -534,11 +547,10 @@ function renderMovies(container) {
         <button class="movie-tab ${activeTab==='watched'?'active':''}" onclick="switchMovieTab('watched')">✅ 已看完</button>
         <button class="movie-tab ${activeTab==='recommend'?'active':''}" onclick="switchMovieTab('recommend')">🎯 推荐</button>
       </div>
-      <!-- 添加影片入口 -->
       <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
         <input class="input" id="movieName" placeholder="影片名称" style="flex:1;min-width:100px;padding:8px 10px;font-size:13px">
         <input class="input" id="movieLink" placeholder="豆瓣链接(可选)" style="flex:1;min-width:100px;padding:8px 10px;font-size:13px">
-        <button class="btn btn-primary btn-sm" onclick="addMovie()" style="white-space:nowrap">+ ��加到${activeTab==='watched'?'已看完':'待观看'}</button>
+        <button class="btn btn-primary btn-sm" onclick="addMovie()" style="white-space:nowrap">+ 添加到${activeTab==='watched'?'已看完':'待观看'}</button>
       </div>
       <div id="movieList">${renderMovieList(activeTab)}</div>
     </div>`;
@@ -561,7 +573,7 @@ function renderMovieList(tab) {
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           ${m.link ? `<a class="movie-ext-link" href="${m.link}" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>豆瓣详情</a>` : ''}
           <button class="movie-move-btn" onclick="moveToWatched(${i})">标记已看</button>
-          <button class="movie-delete-btn" onclick="deleteMovieFromWatchlist(${i})" style="padding:6px 14px;border:1.5px solid var(--danger);border-radius:20px;background:transparent;color:var(--danger);font-size:12px;font-weight:600;cursor:pointer">删除</button>
+          <button class="movie-delete-btn" onclick="deleteMovieFromWatchlist(${i})">删除</button>
         </div>
       </div>`).join('');
   } else if (tab === 'watched') {
@@ -573,7 +585,7 @@ function renderMovieList(tab) {
         <div class="movie-tags">${(m.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}</div>
         <div style="display:flex;gap:8px">
           ${m.link ? `<a class="movie-ext-link" href="${m.link}" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>豆瓣详情</a>` : ''}
-          <button class="movie-delete-btn" onclick="deleteMovieFromWatched(${i})" style="padding:6px 14px;border:1.5px solid var(--danger);border-radius:20px;background:transparent;color:var(--danger);font-size:12px;font-weight:600;cursor:pointer">删除</button>
+          <button class="movie-delete-btn" onclick="deleteMovieFromWatched(${i})">删除</button>
         </div>
       </div>`).join('');
   } else {
@@ -593,7 +605,6 @@ function renderMovieList(tab) {
   }
 }
 
-// 添加影片
 function addMovie() {
   const nameEl = document.getElementById('movieName');
   const linkEl = document.getElementById('movieLink');
@@ -617,7 +628,6 @@ function addMovie() {
   loadPage('movies');
 }
 
-// 删除待看
 function deleteMovieFromWatchlist(idx) {
   if (confirm('确定删除这部影片吗？')) {
     STATE.moviesWatchlist.splice(idx, 1);
@@ -626,7 +636,6 @@ function deleteMovieFromWatchlist(idx) {
   }
 }
 
-// 删除已看
 function deleteMovieFromWatched(idx) {
   if (confirm('确定删除这部影片吗？')) {
     STATE.moviesWatched.splice(idx, 1);
@@ -643,32 +652,26 @@ function moveToWatched(idx) {
   loadPage('movies');
 }
 
-// 推荐 → 想看
 function moveRecommendToWatchlist(idx) {
   const movie = STATE.movieRecommends.splice(idx, 1)[0];
   STATE.moviesWatchlist.unshift(movie);
   saveState('movieRecommends');
   saveState('moviesWatchlist');
-  // 自动补充推荐
   autoRefillRecommends();
   loadPage('movies');
 }
 
-// 推荐 → 已看（同时自动补充）
 function moveRecommendToWatched(idx) {
   const movie = STATE.movieRecommends.splice(idx, 1)[0];
   STATE.moviesWatched.unshift(movie);
   saveState('movieRecommends');
   saveState('moviesWatched');
-  // 自动补充推荐
   autoRefillRecommends();
   loadPage('movies');
 }
 
-// 自动从推荐池补充推荐
 function autoRefillRecommends() {
   if (STATE.movieRecommends.length < 3 && STATE.recommendPool.length > 0) {
-    // 从池中随机取一个补充
     const poolIdx = Math.floor(Math.random() * STATE.recommendPool.length);
     const newRec = STATE.recommendPool.splice(poolIdx, 1)[0];
     STATE.movieRecommends.push(newRec);
@@ -837,7 +840,7 @@ function deleteIdea(idx) {
 function renderMemo(container) {
   container.innerHTML = `
     <div class="module-page fade-in">
-      <div class="module-header"><div class="module-title">📌 生活备忘</div><div class="module-desc">零散琐事，随手��录</div></div>
+      <div class="module-header"><div class="module-title">📌 生活备忘</div><div class="module-desc">零散琐事，随手记录</div></div>
       <div style="margin-bottom:16px">
         <div class="todo-input-row">
           <input class="input" id="memoInput" placeholder="记录零散琐事..." onkeydown="if(event.key==='Enter')addMemo()">
