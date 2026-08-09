@@ -121,6 +121,33 @@
   padding: 16px;
   border-top: 1px solid rgba(212,197,240,0.15);
 }
+.sidebar-sync-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.sidebar-sync-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1.5px solid var(--purple-light);
+  border-radius: var(--radius-sm);
+  background: rgba(212,197,240,0.08);
+  color: var(--purple-deep);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sidebar-sync-btn:active {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;
+}
 .sidebar-automation-status {
   display: flex;
   align-items: center;

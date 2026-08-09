@@ -877,3 +877,80 @@ function escapeHtml(text) {
   div.textContent = text;
   return div.innerHTML;
 }
+
+// ====== 数据导出/导入（多设备同步） ======
+function exportData() {
+  const exportObj = {};
+  const keys = ['todos','bodyStatus','wordCount','learnedWords','todayMood',
+    'moodHistory','waterCups','dietRecords','trainingDone','bodyRecords',
+    'moviesWatched','moviesWatchlist','movieRecommends','recommendPool',
+    'paperNotes','readingList','whiteboardIdeas','memos'];
+  keys.forEach(k => {
+    if (typeof STATE[k] === 'object') {
+      exportObj[k] = JSON.stringify(STATE[k]);
+    } else {
+      exportObj[k] = String(STATE[k]);
+    }
+  });
+  exportObj['_exportDate'] = new Date().toISOString();
+  exportObj['_version'] = '1.0';
+  
+  const json = JSON.stringify(exportObj, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'synapse-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data._version) {
+        alert('文件格式不正确，请选择 Synapse 备份文件');
+        return;
+      }
+      const keys = ['todos','bodyStatus','wordCount','learnedWords','todayMood',
+        'moodHistory','waterCups','dietRecords','trainingDone','bodyRecords',
+        'moviesWatched','moviesWatchlist','movieRecommends','recommendPool',
+        'paperNotes','readingList','whiteboardIdeas','memos'];
+      keys.forEach(k => {
+        if (data[k] !== undefined) {
+          if (k === 'wordCount' || k === 'waterCups') {
+            STATE[k] = parseInt(data[k]);
+            savePrimitive(k);
+          } else if (k === 'todayMood') {
+            STATE[k] = data[k];
+            safeStorage.setItem('synapse_todayMood', data[k]);
+          } else {
+            STATE[k] = JSON.parse(data[k]);
+            saveState(k);
+          }
+        }
+      });
+      alert('数据导入成功！共同步 ' + keys.length + ' 项数据');
+      loadPage(STATE.currentPage);
+    } catch(err) {
+      alert('导入失败：' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function triggerImport() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = function(e) {
+    if (e.target.files[0]) {
+      importData(e.target.files[0]);
+    }
+  };
+  input.click();
+}

@@ -1596,6 +1596,33 @@ textarea.input {
   padding: 16px;
   border-top: 1px solid rgba(212,197,240,0.15);
 }
+.sidebar-sync-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.sidebar-sync-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1.5px solid var(--purple-light);
+  border-radius: var(--radius-sm);
+  background: rgba(212,197,240,0.08);
+  color: var(--purple-deep);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sidebar-sync-btn:active {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;
+}
 .sidebar-automation-status {
   display: flex;
   align-items: center;
@@ -1755,6 +1782,16 @@ textarea.input {
       </a>
     </div>
     <div class="sidebar-footer">
+      <div class="sidebar-sync-section">
+        <button class="sidebar-sync-btn" onclick="exportData()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出数据
+        </button>
+        <button class="sidebar-sync-btn" onclick="triggerImport()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          导入数据
+        </button>
+      </div>
       <div class="sidebar-automation-status" id="autoStatus">
         <span class="status-dot"></span>
         <span>自动化: 静态模板</span>
@@ -1781,17 +1818,6 @@ textarea.input {
 
 </div>
 
-<script>
-// 防卡死：5秒后如果开屏还在，自动进入主页
-setTimeout(function(){
-  var splash = document.getElementById('splashScreen');
-  var main = document.getElementById('mainApp');
-  if(splash && !splash.classList.contains('hidden')){
-    splash.classList.add('hidden');
-    if(main) main.classList.remove('hidden');
-  }
-}, 5000);
-</script>
 
 
 <script>
@@ -2990,6 +3016,83 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+// ====== 数据导出/导入（多设备同步） ======
+function exportData() {
+  const exportObj = {};
+  const keys = ['todos','bodyStatus','wordCount','learnedWords','todayMood',
+    'moodHistory','waterCups','dietRecords','trainingDone','bodyRecords',
+    'moviesWatched','moviesWatchlist','movieRecommends','recommendPool',
+    'paperNotes','readingList','whiteboardIdeas','memos'];
+  keys.forEach(k => {
+    if (typeof STATE[k] === 'object') {
+      exportObj[k] = JSON.stringify(STATE[k]);
+    } else {
+      exportObj[k] = String(STATE[k]);
+    }
+  });
+  exportObj['_exportDate'] = new Date().toISOString();
+  exportObj['_version'] = '1.0';
+  
+  const json = JSON.stringify(exportObj, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'synapse-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data._version) {
+        alert('文件格式不正确，请选择 Synapse 备份文件');
+        return;
+      }
+      const keys = ['todos','bodyStatus','wordCount','learnedWords','todayMood',
+        'moodHistory','waterCups','dietRecords','trainingDone','bodyRecords',
+        'moviesWatched','moviesWatchlist','movieRecommends','recommendPool',
+        'paperNotes','readingList','whiteboardIdeas','memos'];
+      keys.forEach(k => {
+        if (data[k] !== undefined) {
+          if (k === 'wordCount' || k === 'waterCups') {
+            STATE[k] = parseInt(data[k]);
+            savePrimitive(k);
+          } else if (k === 'todayMood') {
+            STATE[k] = data[k];
+            safeStorage.setItem('synapse_todayMood', data[k]);
+          } else {
+            STATE[k] = JSON.parse(data[k]);
+            saveState(k);
+          }
+        }
+      });
+      alert('数据导入成功！共同步 ' + keys.length + ' 项数据');
+      loadPage(STATE.currentPage);
+    } catch(err) {
+      alert('导入失败：' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function triggerImport() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = function(e) {
+    if (e.target.files[0]) {
+      importData(e.target.files[0]);
+    }
+  };
+  input.click();
 }
 
 
